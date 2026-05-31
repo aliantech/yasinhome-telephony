@@ -1,0 +1,110 @@
+name: Sync upstream feed
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 20 * * *"
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout fork
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+          ref: master
+
+      - name: Mirror upstream branch and keep workflow
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git remote add upstream https://github.com/coolsnowwolf/telephony.git
+          git fetch upstream master
+          git checkout master
+          git reset --hard upstream/master
+          mkdir -p .github/workflows
+          cat > .github/workflows/sync-upstream.yml <<\x27WORKFLOW\x27
+name: Sync upstream feed
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 20 * * *"
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout fork
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+          ref: master
+
+      - name: Mirror upstream branch and keep workflow
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git remote add upstream https://github.com/coolsnowwolf/telephony.git
+          git fetch upstream master
+          git checkout master
+          git reset --hard upstream/master
+          mkdir -p .github/workflows
+          cat > .github/workflows/sync-upstream.yml <<\x27\x27\x27WORKFLOW\x27\x27\x27
+name: Sync upstream feed
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 20 * * *"
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout fork
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+          ref: master
+
+      - name: Mirror upstream branch and keep workflow
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git remote add upstream https://github.com/coolsnowwolf/telephony.git
+          git fetch upstream master
+          git checkout master
+          git reset --hard upstream/master
+          mkdir -p .github/workflows
+          echo "This workflow needs to be refreshed from the yasinhome main setup."
+          git status --short
+          git push --force-with-lease origin master
+WORKFLOW
+          git add .github/workflows/sync-upstream.yml
+          if ! git diff --cached --quiet; then
+            git commit -m "Keep upstream feed sync workflow"
+          fi
+          git push --force-with-lease origin master
+WORKFLOW
+          git add .github/workflows/sync-upstream.yml
+          if ! git diff --cached --quiet; then
+            git commit -m "Keep upstream feed sync workflow"
+          fi
+          git push --force-with-lease origin master
